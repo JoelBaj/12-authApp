@@ -20,15 +20,15 @@ export class RegisterComponent {
 
   }
   registro() { 
-    const {name,email, password } = this.miFormulario.value;
+    const {name,email, password } = this.miFormulario.value;//Extraer los valores del formulario
 
-    this.authService.registro(name, email, password)
+    this.authService.registro(name, email, password) // Llamar al método 'registro' del servicio de autenticación (AuthService)
       .subscribe(ok => { 
 
         console.log(ok)
-        if (ok === true) {
+        if (ok === true) { // Si el registro es exitoso, redirigir al usuario a la página de dashboard
           this.router.navigateByUrl('/dashboard')
-          
+          // Si hay un error, mostrar un mensaje de error utilizando la librería Swal
         } else { 
           Swal.fire('Error', ok, 'error')
         }

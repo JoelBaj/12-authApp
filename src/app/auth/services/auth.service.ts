@@ -21,21 +21,22 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   registro(name: string, email: string, password: string) { 
-     const url = `${this.baseUrl}/auth/new`;
-    const body = { email, password, name };
-  
-    return this.http.post<AuthResponse>(url, body)
-      .pipe(
-        tap(resp => { 
-          if (resp.ok) {
-              localStorage.setItem('token', resp.token!);
-            }
-        }),
-        map(resp => resp.ok),
-        catchError(err => of(err.error.msg))
     
-    )
-  }
+  const url = `${this.baseUrl}/auth/new`;
+  const body = { email, password, name };
+  // Se realiza una solicitud HTTP POST usando la biblioteca 'http'.
+  // La respuesta se espera que sea de tipo 'AuthResponse'.
+  return this.http.post<AuthResponse>(url, body)
+    .pipe(  
+      tap(resp => { // Se utiliza el operador 'tap' para realizar acciones secundarias cuando la solicitud tiene éxito.
+        if (resp.ok) {
+          localStorage.setItem('token', resp.token!);// Si la respuesta es exitosa (ok), se almacena el token en el almacenamiento local.
+        }
+      }),
+      map(resp => resp.ok),// Se utiliza el operador 'map' para transformar la respuesta en un booleano (true si es 'ok', false en caso contrario).
+      catchError(err => of(err.error.msg)) // Se utiliza el operador 'catchError' para manejar cualquier error que pueda ocurrir durante la solicitud.
+    );
+}
 
   login(email: string, password: string) { 
 
